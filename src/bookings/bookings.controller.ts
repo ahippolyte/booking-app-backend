@@ -16,6 +16,15 @@ export class BookingsController {
     return this.bookingsService.findAll();
   }
 
+  @Get('user/:userId')
+  // @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get bookings by user ID' })
+  @ApiResponse({ status: 200, description: 'Return user bookings' })
+  findByUser(@Param('userId') userId: string) {
+    return this.bookingsService.findAll(userId);
+  }
+
   @Get(':id')
   // @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
@@ -42,5 +51,12 @@ export class BookingsController {
   @ApiResponse({ status: 200, description: 'Booking cancelled successfully' })
   cancel(@Param('id') id: string) {
     return this.bookingsService.cancel(id);
+  }
+
+  @Get('property/:propertyId/booked-dates')
+  @ApiOperation({ summary: 'Get booked dates for a property' })
+  @ApiResponse({ status: 200, description: 'Return booked dates' })
+  getBookedDates(@Param('propertyId') propertyId: string) {
+    return this.bookingsService.getBookedDatesByProperty(propertyId);
   }
 }

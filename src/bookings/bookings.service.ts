@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -73,6 +73,48 @@ export class BookingsService {
     userId: string;
     propertyId: string;
   }) {
+    // Vérifier si les dates sont disponibles
+    const checkInDate = new Date(data.checkIn);
+    const checkOutDate = new Date(data.checkOut);
+
+    const overlappingBookings = await this.prisma.booking.findMany({
+      where: {
+        propertyId: data.propertyId,
+        status: {
+          in: ['PENDING', 'CONFIRMED'],
+        },
+        OR: [
+          // Nouvelle réservation commence pendant une réservation existante
+          {
+            AND: [
+              { checkIn: { lte: checkInDate } },
+              { checkOut: { gt: checkInDate } },
+            ],
+          },
+          // Nouvelle réservation se termine pendant une réservation existante
+          {
+            AND: [
+              { checkIn: { lt: checkOutDate } },
+              { checkOut: { gte: checkOutDate } },
+            ],
+          },
+          // Nouvelle réservation englobe complètement une réservation existante
+          {
+            AND: [
+              { checkIn: { gte: checkInDate } },
+              { checkOut: { lte: checkOutDate } },
+            ],
+          },
+        ],
+      },
+    });
+
+    if (overlappingBookings.length > 0) {
+      throw new ConflictException(
+        'Ces dates ne sont pas disponibles. Une réservation existe déjà pour cette période.',
+      );
+    }
+
     return this.prisma.booking.create({
       data,
       include: {
@@ -96,5 +138,22 @@ export class BookingsService {
 
   async cancel(id: string) {
     return this.updateStatus(id, 'CANCELLED');
+  }
+
+  async getBookedDatesByProperty(propertyId: string) {
+    const bookings = await this.prisma.booking.findMany({
+      where: {
+        propertyId,
+        status: {
+          in: ['PENDING', 'CONFIRMED'],
+        },
+      },
+      select: {
+        checkIn: true,
+        checkOut: true,
+      },
+    });
+
+    return bookings;
   }
 }

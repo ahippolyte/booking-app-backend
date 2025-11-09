@@ -64,38 +64,49 @@ async function main() {
   console.log(`✅ ${amenities.length} amenities created`);
 
   // Create properties
-  const riadLuxe = await prisma.property.create({
+  const riadMarisol = await prisma.property.create({
     data: {
-      slug: 'riad-luxe-medina',
-      title: 'Riad Luxe Médina',
-      description: 'Magnifique riad traditionnel situé au cœur de la médina de Marrakech. Entièrement rénové avec un mélange harmonieux de style marocain authentique et de confort moderne.',
+      slug: 'riad-marisol-medina',
+      title: 'Riad Marisol Médina',
+      description: 'Bienvenue à Marisol, un Riad entièrement privatisé rien que pour vous, niché au cœur de la kasbah. Ce riad dispose de 3 chambres confortables avec salles de bains privatives, une piscine rafraîchissante et une terrasse ombragée. Pendant votre séjour, laissez-vous choyer par Wafa qui prépare chaque matin de délicieux petits déjeuners marocains, assure un ménage quotidien et sur demande, cuisine des plats marocains savoureux. Nous organisons excursions et activités pour découvrir Marrakech.',
       type: 'RIAD',
-      pricePerNight: 350,
-      bedrooms: 5,
-      bathrooms: 5,
-      guests: 10,
-      address: 'Derb Arset Aouzal, Médina',
+      pricePerNight: 280,
+      bedrooms: 3,
+      bathrooms: 3,
+      guests: 6,
+      address: 'Kasbah, Médina',
       city: 'Marrakech',
       country: 'Morocco',
-      latitude: 31.6295,
-      longitude: -7.9811,
+      latitude: 31.6211,
+      longitude: -7.9897,
+      featured: true,
       images: {
         create: [
           {
-            url: '/images/properties/riad-luxe-1.jpg',
-            alt: 'Patio principal du riad',
+            url: '/images/properties/riad-marisol-medina-main.jpg',
+            alt: 'Vue du patio principal du Riad',
             isMain: true,
           },
           {
-            url: '/images/properties/riad-luxe-2.jpg',
-            alt: 'Suite principale',
+            url: '/images/properties/riad-marisol-medina-chambre1.jpg',
+            alt: 'Première chambre du Riad',
             isMain: false,
           },
           {
-            url: '/images/properties/riad-luxe-3.jpg',
-            alt: 'Terrasse sur le toit',
+            url: '/images/properties/riad-marisol-medina-chambre2.jpg',
+            alt: 'Deuxième chambre du Riad',
             isMain: false,
           },
+          {
+            url: '/images/properties/riad-marisol-medina-chambre3.jpg',
+            alt: 'Troisième chambre du Riad',
+            isMain: false,
+          },
+          {
+            url: '/images/properties/riad-marisol-medina-terrasse.jpg',
+            alt: 'Terrasse du Riad',
+            isMain: false,
+          }
         ],
       },
       amenities: {
@@ -105,65 +116,20 @@ async function main() {
           { amenity: { connect: { name: 'Climatisation' } } },
           { amenity: { connect: { name: 'Cuisine équipée' } } },
           { amenity: { connect: { name: 'Terrasse' } } },
-          { amenity: { connect: { name: 'Hammam' } } },
-          { amenity: { connect: { name: 'Majordome' } } },
-          { amenity: { connect: { name: 'Ménage quotidien' } } },
-        ],
-      },
-    },
-  });
-  console.log('✅ Property created:', riadLuxe.title);
-
-  const villaModerne = await prisma.property.create({
-    data: {
-      slug: 'villa-moderne-palmeraie',
-      title: 'Villa Moderne Palmeraie',
-      description: 'Superbe villa contemporaine située dans la palmeraie de Marrakech, offrant une vue imprenable sur l\'Atlas. Design moderne avec équipements haut de gamme.',
-      type: 'VILLA',
-      pricePerNight: 500,
-      bedrooms: 6,
-      bathrooms: 6,
-      guests: 12,
-      address: 'Route de Fès, Palmeraie',
-      city: 'Marrakech',
-      country: 'Morocco',
-      latitude: 31.6692,
-      longitude: -7.9367,
-      images: {
-        create: [
-          {
-            url: '/images/properties/villa-moderne-1.jpg',
-            alt: 'Façade de la villa',
-            isMain: true,
-          },
-          {
-            url: '/images/properties/villa-moderne-2.jpg',
-            alt: 'Piscine à débordement',
-            isMain: false,
-          },
-        ],
-      },
-      amenities: {
-        create: [
-          { amenity: { connect: { name: 'WiFi' } } },
-          { amenity: { connect: { name: 'Piscine' } } },
-          { amenity: { connect: { name: 'Climatisation' } } },
-          { amenity: { connect: { name: 'Cuisine équipée' } } },
-          { amenity: { connect: { name: 'Parking' } } },
-          { amenity: { connect: { name: 'Jardin' } } },
           { amenity: { connect: { name: 'Chef privé' } } },
+          { amenity: { connect: { name: 'Ménage quotidien' } } },
           { amenity: { connect: { name: 'Transfert aéroport' } } },
         ],
       },
     },
   });
-  console.log('✅ Property created:', villaModerne.title);
+  console.log('✅ Property created:', riadMarisol.title);
 
   const appartementGueliz = await prisma.property.create({
     data: {
-      slug: 'appartement-centre-gueliz',
-      title: 'Appartement Centre Guéliz',
-      description: 'Appartement spacieux et élégant en plein centre du quartier moderne de Guéliz. Proche de tous les commerces, restaurants et attractions.',
+      slug: 'appartement-dyafa-gueliz',
+      title: 'Appartement Dyafa Guéliz',
+      description: 'Appartement spacieux et élégant en plein centre du quartier moderne de Guéliz. Proche de tous les commerces, restaurants et attractions. Idéal pour découvrir Marrakech moderne tout en profitant d\'un confort optimal.',
       type: 'APARTMENT',
       pricePerNight: 150,
       bedrooms: 3,
@@ -171,14 +137,15 @@ async function main() {
       guests: 6,
       address: 'Avenue Mohamed V, Guéliz',
       city: 'Marrakech',
+      featured: true,
       country: 'Morocco',
       latitude: 31.6369,
       longitude: -8.0089,
       images: {
         create: [
           {
-            url: '/images/properties/appt-gueliz-1.jpg',
-            alt: 'Salon moderne',
+            url: '/images/properties/apt-dyafa-gueliz-main.jpg',
+            alt: 'Salon moderne de l\'appartement',
             isMain: true,
           },
         ],
@@ -195,15 +162,52 @@ async function main() {
   });
   console.log('✅ Property created:', appartementGueliz.title);
 
+  const douiria = await prisma.property.create({
+    data: {
+      slug: 'douiria-prinssa-medina',
+      title: 'Douiria Prinssa Médina',
+      description: 'Charmante douiria traditionnelle marocaine située dans la médina historique de Marrakech. Cette petite maison de charme offre une expérience authentique avec son architecture typique, ses zellige et ses boiseries sculptées. Parfaite pour un couple ou une petite famille recherchant intimité et authenticité.',
+      type: 'RIAD',
+      pricePerNight: 200,
+      bedrooms: 2,
+      bathrooms: 2,
+      guests: 4,
+      address: 'Derb Sidi Bouloukat, Médina',
+      city: 'Marrakech',
+      featured: false,
+      country: 'Morocco',
+      latitude: 31.6258,
+      longitude: -7.9891,
+      images: {
+        create: [
+          {
+            url: '/images/properties/riad-prinssa-medina-main.jpg',
+            alt: 'Intérieur de la Douiria',
+            isMain: true,
+          },
+        ],
+      },
+      amenities: {
+        create: [
+          { amenity: { connect: { name: 'WiFi' } } },
+          { amenity: { connect: { name: 'Climatisation' } } },
+          { amenity: { connect: { name: 'Cuisine équipée' } } },
+          { amenity: { connect: { name: 'Terrasse' } } },
+        ],
+      },
+    },
+  });
+  console.log('✅ Property created:', douiria.title);
+
   // Create a sample booking
   const booking = await prisma.booking.create({
     data: {
       userId: customer.id,
-      propertyId: riadLuxe.id,
-      checkIn: new Date('2024-07-15'),
-      checkOut: new Date('2024-07-22'),
-      guests: 8,
-      totalPrice: 2450, // 7 nights * 350€
+      propertyId: riadMarisol.id,
+      checkIn: new Date('2025-12-24'),
+      checkOut: new Date('2025-12-31'),
+      guests: 4,
+      totalPrice: 1960, // 7 nights * 280€
       status: 'CONFIRMED',
       guestFirstName: customer.firstName,
       guestLastName: customer.lastName,
@@ -217,9 +221,9 @@ async function main() {
   await prisma.review.create({
     data: {
       userId: customer.id,
-      propertyId: riadLuxe.id,
+      propertyId: riadMarisol.id,
       rating: 5,
-      comment: 'Séjour exceptionnel dans ce magnifique riad. Le personnel est aux petits soins et l\'emplacement est parfait pour découvrir la médina.',
+      comment: 'Séjour exceptionnel au Riad Marisol ! Wafa nous a préparé des petits déjeuners délicieux chaque matin. La piscine et la terrasse sont magnifiques. L\'emplacement dans la kasbah est parfait pour découvrir la médina.',
     },
   });
   console.log('✅ Sample review created');

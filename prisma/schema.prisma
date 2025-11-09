@@ -135,7 +135,7 @@ model Booking {
   totalPrice     Float
   cleaningFee    Float         @default(0)
   discount       Float         @default(0)
-  status         BookingStatus @default(PENDING)
+  status         BookingStatus @default(CONFIRMED)
   
   // Guest information
   guestFirstName String
